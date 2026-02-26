@@ -1,0 +1,9 @@
+.jobapplication {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    margin-top: 2%;
+    justify-content: center;
+    color: whitesmoke;
+    display: flex;
+}
