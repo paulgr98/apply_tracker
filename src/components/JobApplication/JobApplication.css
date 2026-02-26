@@ -7,3 +7,42 @@
     color: whitesmoke;
     display: flex;
 }
+
+tr.inputrow > td {
+    height: 3em;
+    border-style: dashed;
+    border-bottom-style: solid;
+    border-color: #00611ab9;
+    border-width: 1px;
+    border-left-width: 2px;
+    border-right-width: 2px;
+    background-color: #00611a0c;
+}
+
+tr.inputrow td:first-child {
+    border-style: solid;
+    border-right-style: dashed;
+    border-right-width: 2px;
+    border-left-width: 1px;
+    border-top-style: dashed;
+}
+
+tr.inputrow td:last-child {
+    border-style: solid;
+    border-left-style: dashed;
+    border-left-width: 2px;
+    border-right-width: 1px;
+    border-top-style: dashed;
+}
+
+.bi {
+    font-weight: bolder;
+}
+
+.btn {
+    border-radius: 50% !important;
+}
+
+.longer {
+    width: 14%;
+}
