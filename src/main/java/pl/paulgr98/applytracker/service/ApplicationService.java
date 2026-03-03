@@ -17,6 +17,8 @@ public interface ApplicationService {
 
     List<ApplicationDto> searchApplicationsByCompanyName(String companyName);
 
+    List<String> getApplicationStatuses();
+
     ApplicationDto updateApplication(Long id, ApplicationDto applicationDto);
 
     ApplicationDto changeApplicationStatus(Long id, ApplicationStatusDto statusDto);

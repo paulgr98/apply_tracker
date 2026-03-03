@@ -10,15 +10,13 @@ import org.springframework.stereotype.Service;
 import pl.paulgr98.applytracker.dto.ApplicationDto;
 import pl.paulgr98.applytracker.dto.ApplicationStatusDto;
 import pl.paulgr98.applytracker.entity.Application;
+import pl.paulgr98.applytracker.entity.ApplicationStatus;
 import pl.paulgr98.applytracker.exception.ResourceNotFoundException;
 import pl.paulgr98.applytracker.repository.ApplicationRepository;
 import pl.paulgr98.applytracker.service.ApplicationService;
 
 import java.beans.PropertyDescriptor;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -81,6 +79,13 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         return applications.stream()
                 .map(application -> modelMapper.map(application, ApplicationDto.class))
+                .toList();
+    }
+
+    @Override
+    public List<String> getApplicationStatuses() {
+        return Arrays.stream(ApplicationStatus.values())
+                .map(ApplicationStatus::getDisplayName)
                 .toList();
     }
 

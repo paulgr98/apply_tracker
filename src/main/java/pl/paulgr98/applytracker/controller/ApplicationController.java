@@ -55,6 +55,12 @@ public class ApplicationController {
         return ResponseEntity.ok(found);
     }
 
+    @GetMapping("/statuses")
+    public ResponseEntity<List<String>> getAllApplicationStatuses() {
+        List<String> statuses = applicationService.getApplicationStatuses();
+        return ResponseEntity.ok(statuses);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ApplicationDto> updateApplication(@PathVariable Long id,
                                                             @RequestBody ApplicationDto applicationDto) {
