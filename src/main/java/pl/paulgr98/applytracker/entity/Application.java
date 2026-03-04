@@ -31,7 +31,7 @@ public class Application {
     @Column(name = "offer_link", nullable = false)
     private String offerLink;
 
-    @Column(nullable = false, options = "CHECK (status IN ('APPLIED', 'WAITING', 'RECRUITMENT', 'REJECTED', 'NO_RESPONSE', 'JOB_OFFER'))")
+    @Column(nullable = false, length = 20, options = "CHECK (status IN ('APPLIED', 'WAITING', 'RECRUITMENT', 'REJECTED', 'NO_RESPONSE', 'JOB_OFFER'))")
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status;
 
