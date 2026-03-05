@@ -98,7 +98,9 @@ const JobApplication = () => {
                                             <td>{formatDate(application.applicationDate)}</td>
                                             <td>{application.companyName}</td>
                                             <td>{application.positionName}</td>
-                                            <td><a href={application.offerLink}>Click Me!</a></td>
+                                            <td>
+                                                <a href={application.offerLink} target='_blank'>Click Me!</a>
+                                            </td>
                                             <td className='longer'>{application.status}</td>
                                             <td>{application.comment}</td>
                                             <td>{application.cvFileName}</td>
