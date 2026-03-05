@@ -99,7 +99,10 @@ const JobApplication = () => {
                                             <td>{application.companyName}</td>
                                             <td>{application.positionName}</td>
                                             <td>
-                                                <a href={application.offerLink} target='_blank'>Click Me!</a>
+                                                {application.offerLink ? (
+                                                    <a href={application.offerLink} target='_blank'>Click Me!</a>
+                                                ) : (
+                                                    '')}
                                             </td>
                                             <td className='longer'>{application.status}</td>
                                             <td>{application.comment}</td>
