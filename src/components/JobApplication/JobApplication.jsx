@@ -34,7 +34,7 @@ const JobApplication = () => {
     const [company, setCompany] = useState('');
     const [position, setPosition] = useState('');
     const [offerLink, setOfferLink] = useState('');
-    const [status, setStatus] = useState(statuses[0]);
+    const [status, setStatus] = useState(statuses.length > 0 ? statuses[0] : '');
     const [comment, setComment] = useState('');
     const [cvFileName, setCvFileName] = useState('');
 
@@ -50,10 +50,21 @@ const JobApplication = () => {
             comment: comment,
             cvFileName: cvFileName
         }).then((response) => {
+            clearInputFields();
             getAllApplications();
         }).catch(error => {
             console.error(error);
         })
+    }
+
+    const clearInputFields = () => {
+        setDate(today);
+        setCompany('');
+        setPosition('');
+        setOfferLink('');
+        setStatus(statuses.length > 0 ? statuses[0] : '');
+        setComment('');
+        setCvFileName('');
     }
 
     const formatDate = (date) => {
@@ -111,18 +122,22 @@ const JobApplication = () => {
                                     </td>
                                     <td>
                                         <input className="form-control" type="text" name='company'
+                                            value={company}
                                             onChange={(event) => setCompany(event.target.value)} />
                                     </td>
                                     <td>
                                         <input className="form-control" type="text" name='position'
+                                            value={position}
                                             onChange={(event) => setPosition(event.target.value)} />
                                     </td>
                                     <td>
                                         <input className="form-control" type="text" name='offer-link'
+                                            value={offerLink}
                                             onChange={(event) => setOfferLink(event.target.value)} />
                                     </td>
                                     <td>
                                         <select className='form-select'
+                                            value={status}
                                             onChange={(event) => setStatus(event.target.value)}>
                                             {
                                                 statuses.map(status =>
@@ -133,10 +148,12 @@ const JobApplication = () => {
                                     </td>
                                     <td>
                                         <textarea className="form-control" id="comment" name='comment' rows="1"
+                                            value={comment}
                                             onChange={(event) => setComment(event.target.value)} />
                                     </td>
                                     <td>
                                         <input className="form-control" type="text" name='cv-file'
+                                            value={cvFileName}
                                             onChange={(event) => setCvFileName(event.target.value)} />
                                     </td>
 
