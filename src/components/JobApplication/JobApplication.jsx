@@ -122,7 +122,7 @@ const JobApplication = () => {
             if (!contextMenuRef.current) {
                 return
             }
-            if (contextMenuRef.current.contains(e.target)) {
+            if (!contextMenuRef.current.contains(e.target)) {
                 resetContextMenu()
             }
         }
@@ -135,13 +135,13 @@ const JobApplication = () => {
 
     const resetContextMenu = () => {
         setApplications(
-            applications.map(app => {
+            applications.map((app) => {
                 return {
                     ...app,
                     selected: false
-                }
+                };
             })
-        )
+        );
 
         setContextMenu({
             position: {
@@ -149,7 +149,7 @@ const JobApplication = () => {
                 y: 0
             },
             toggled: false
-        })
+        });
     }
 
     return (
