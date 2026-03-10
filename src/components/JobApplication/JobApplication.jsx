@@ -1,11 +1,21 @@
 import { listAllApplications, listAllStatus, addApplication } from '../../services/JobApplicationService'
 import { JobApplicationModel } from './JobApplicationModel'
 import './JobApplication.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import ContextMenu from '../ContextMenu'
 
 const JobApplication = () => {
 
     const [applications, setApplications] = useState([])
+    const contextMenuRef = useRef(null);
+    const [contextMenu, setContextMenu] = useState({
+        position: {
+            x: 0,
+            y: 0
+        },
+        toggled: false
+    })
+
     useEffect(() => {
         getAllApplications();
     }, [])
@@ -72,6 +82,76 @@ const JobApplication = () => {
         return isoDate.toLocaleDateString('pl-PL');
     }
 
+    const handleOnContextMenu = (e, rightClickedApp) => {
+        e.preventDefault();
+
+        const contextMenuAttr = contextMenuRef.current.getBoundingClientRect()
+
+        const isLeft = e.clientX < window?.innerWidth / 2
+
+        let x
+        let y = e.clientY
+
+        if (isLeft) {
+            x = e.clientX
+        } else {
+            x = e.clientX - contextMenuAttr.width
+        }
+
+        setContextMenu({
+            position: {
+                x,
+                y
+            },
+            toggled: true
+        })
+
+        setApplications(
+            applications.map(app => {
+                return {
+                    ...app,
+                    selected: app.id === rightClickedApp
+                }
+            })
+        )
+
+    }
+
+    useEffect(() => {
+        const handler = (e) => {
+            if (!contextMenuRef.current) {
+                return
+            }
+            if (contextMenuRef.current.contains(e.target)) {
+                resetContextMenu()
+            }
+        }
+        document.addEventListener('click', handler)
+
+        return () => {
+            document.removeEventListener('click', handler)
+        }
+    })
+
+    const resetContextMenu = () => {
+        setApplications(
+            applications.map(app => {
+                return {
+                    ...app,
+                    selected: false
+                }
+            })
+        )
+
+        setContextMenu({
+            position: {
+                x: 0,
+                y: 0
+            },
+            toggled: false
+        })
+    }
+
     return (
         <>
             <div className="jobapplication">
@@ -93,7 +173,11 @@ const JobApplication = () => {
                             <tbody>
                                 {
                                     applications.map(application =>
-                                        <tr key={application.id}>
+                                        <tr
+                                            key={application.id}
+                                            onContextMenu={(e) => { handleOnContextMenu(e, application) }}
+                                            className={`${application.selected ? "selected" : ""}`}
+                                        >
                                             <td>{application.id}</td>
                                             <td>{formatDate(application.applicationDate)}</td>
                                             <td>{application.companyName}</td>
@@ -166,6 +250,24 @@ const JobApplication = () => {
                             </tbody>
                         </table>
                     </form>
+                    <ContextMenu
+                        contextMenuRef={contextMenuRef}
+                        isToggled={contextMenu.toggled}
+                        positionX={contextMenu.position.x}
+                        positionY={contextMenu.position.y}
+                        buttons={[
+                            {
+                                text: "Edit",
+                                icon: "🖊️",
+                                onClick: () => { console.log("EDIT") }
+                            },
+                            {
+                                text: "Delete",
+                                icon: "🗑️",
+                                onClick: () => { console.log("DELETE") }
+                            }
+                        ]}
+                    />
                 </div>
             </div>
         </>
