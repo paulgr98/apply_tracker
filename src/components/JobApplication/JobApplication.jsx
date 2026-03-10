@@ -1,4 +1,10 @@
-import { listAllApplications, listAllStatus, addApplication } from '../../services/JobApplicationService'
+import {
+    fetchAllJobApplications,
+    fetchAllApplicationStatuses,
+    addJobApplication,
+    updateJobApplication,
+    deleteJobApplication
+} from '../../services/JobApplicationService'
 import './JobApplication.css'
 import { useEffect, useRef, useState } from 'react'
 import ContextMenu from '../ContextMenu'
@@ -19,7 +25,7 @@ const JobApplication = () => {
         getAllApplications();
     }, [])
     const getAllApplications = () => {
-        listAllApplications().then((response) => {
+        fetchAllJobApplications().then((response) => {
             setApplications(response.data);
         }).catch(error => {
             console.error(error);
@@ -31,7 +37,7 @@ const JobApplication = () => {
         getAllStatus();
     }, [])
     const getAllStatus = () => {
-        listAllStatus().then((response) => {
+        fetchAllApplicationStatuses().then((response) => {
             setStatuses(response.data);
         }).catch(error => {
             console.error(error);
@@ -50,7 +56,7 @@ const JobApplication = () => {
     const handleAddApplication = (event) => {
         event.preventDefault();
 
-        addApplication({
+        addJobApplication({
             applicationDate: date,
             companyName: company,
             positionName: position,
@@ -109,7 +115,7 @@ const JobApplication = () => {
             applications.map(app => {
                 return {
                     ...app,
-                    selected: app.id === rightClickedApp
+                    selected: app.id === rightClickedApp.id
                 }
             })
         )
@@ -149,6 +155,23 @@ const JobApplication = () => {
             },
             toggled: false
         });
+    }
+
+    const handleEditApplication = () => {
+        console.log("EDIT")
+    }
+
+    const handleDeleteApplication = () => {
+        const selectedApp = applications.find(app => app.selected);
+        if (!selectedApp) {
+            return;
+        }
+        deleteJobApplication(selectedApp.id).then((response) => {
+            resetContextMenu();
+            getAllApplications();
+        }).catch(error => {
+            console.error(error);
+        })
     }
 
     return (
@@ -258,12 +281,12 @@ const JobApplication = () => {
                             {
                                 text: "Edit",
                                 icon: "🖊️",
-                                onClick: () => { console.log("EDIT") }
+                                onClick: () => { handleEditApplication() }
                             },
                             {
                                 text: "Delete",
                                 icon: "🗑️",
-                                onClick: () => { console.log("DELETE") }
+                                onClick: () => { handleDeleteApplication() }
                             }
                         ]}
                     />
