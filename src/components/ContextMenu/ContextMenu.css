@@ -32,12 +32,23 @@
     cursor: pointer;
 }
 
-.context-menu button:hover {
-    background-color: #4f4f4f;
-    color: #86d3ff;
-}
-
 .context-menu button .icon {
     opacity: 1;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.context-menu .button-edit {
+    color: #86d3ff;
+}
+
+.context-menu .button-edit:hover {
+    background-color: rgba(134, 211, 255, 0.1);
+}
+
+.context-menu .button-delete {
+    color: #ff6384;
+}
+
+.context-menu .button-delete:hover {
+    background-color: rgba(255, 99, 132, 0.1);
 }

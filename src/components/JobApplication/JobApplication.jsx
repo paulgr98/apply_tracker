@@ -281,11 +281,13 @@ const JobApplication = () => {
                             {
                                 text: "Edit",
                                 icon: "🖊️",
+                                type: "edit",
                                 onClick: () => { handleEditApplication() }
                             },
                             {
                                 text: "Delete",
                                 icon: "🗑️",
+                                type: "delete",
                                 onClick: () => { handleDeleteApplication() }
                             }
                         ]}

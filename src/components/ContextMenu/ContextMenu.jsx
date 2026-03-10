@@ -27,7 +27,7 @@ const ContextMenu = ({
                     <button
                         onClick={handleClick}
                         key={index}
-                        className='context-menu-button'
+                        className={`context-menu-button button-${button.type}`}
                     >
                         <span>{button.text}</span>
                         <span className='icon'>{button.icon}</span>
