@@ -1,5 +1,4 @@
 import { listAllApplications, listAllStatus, addApplication } from '../../services/JobApplicationService'
-import { JobApplicationModel } from './JobApplicationModel'
 import './JobApplication.css'
 import { useEffect, useRef, useState } from 'react'
 import ContextMenu from '../ContextMenu'
