@@ -1,5 +1,6 @@
 package pl.paulgr98.applytracker.service;
 
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,16 @@ public class ApplicationStatusScheduler {
     private ApplicationRepository applicationRepository;
     private static final long ONE_HOUR = 3600000L;
 
+    @PostConstruct
+    public void updateAppliedToWaitingOnStartup() {
+        updateAppliedToWaiting();
+    }
+
     @Scheduled(fixedDelay = ONE_HOUR)
+    public void updateAppliedToWaitingOnSchedule() {
+        updateAppliedToWaiting();
+    }
+
     public void updateAppliedToWaiting() {
 
         int threeDays = 3 * 24 * 60 * 60 * 1000;
@@ -30,7 +40,16 @@ public class ApplicationStatusScheduler {
         applicationRepository.saveAll(applications);
     }
 
+    @PostConstruct
+    public void updateWaitingToNoResponseOnStartup() {
+        updateWaitingToNoResponse();
+    }
+
     @Scheduled(fixedDelay = ONE_HOUR)
+    public void updateWaitingToNoResponseOnSchedule() {
+        updateWaitingToNoResponse();
+    }
+
     public void updateWaitingToNoResponse() {
 
         int twoWeeks = 14 * 24 * 60 * 60 * 1000;
@@ -45,5 +64,4 @@ public class ApplicationStatusScheduler {
         });
         applicationRepository.saveAll(applications);
     }
-
 }
