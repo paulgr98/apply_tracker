@@ -39,7 +39,10 @@ public class ApplicationStatusScheduler {
         List<Application> applications = applicationRepository
                 .findByStatusAndApplicationDateBefore(ApplicationStatus.WAITING, twoWeeksAgo);
 
-        applications.forEach(app -> app.setStatus(ApplicationStatus.NO_RESPONSE));
+        applications.forEach(app -> {
+            app.setStatus(ApplicationStatus.NO_RESPONSE);
+            app.setComment("Automatic status change after 2 weeks of waiting");
+        });
         applicationRepository.saveAll(applications);
     }
 
