@@ -49,7 +49,7 @@ const JobApplication = () => {
     const [company, setCompany] = useState('');
     const [position, setPosition] = useState('');
     const [offerLink, setOfferLink] = useState('');
-    const [status, setStatus] = useState(statuses.length > 0 ? statuses[0] : '');
+    const [status, setStatus] = useState(statuses.length > 0 ? statuses[0] : 'Applied');
     const [comment, setComment] = useState('');
     const [cvFileName, setCvFileName] = useState('');
 
@@ -77,7 +77,7 @@ const JobApplication = () => {
         setCompany('');
         setPosition('');
         setOfferLink('');
-        setStatus(statuses.length > 0 ? statuses[0] : '');
+        setStatus(statuses.length > 0 ? statuses[0] : 'Applied');
         setComment('');
         setCvFileName('');
     }
