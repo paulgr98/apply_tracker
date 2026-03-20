@@ -158,9 +158,156 @@ const JobApplication = () => {
     }
 
 
+    const [editingAppId, setEditingAppId] = useState(null);
+
+    useEffect(() => {
+        if (editingAppId !== null) {
+            const appToEdit = applications.find(app => app.id === editingAppId);
+            if (appToEdit) {
+                setEditingDate(appToEdit.applicationDate);
+                setEditingCompany(appToEdit.companyName);
+                setEditingPosition(appToEdit.positionName);
+                setEditingOfferLink(appToEdit.offerLink);
+                setEditingStatus(appToEdit.status);
+                setEditingComment(appToEdit.comment);
+                setEditingCvFileName(appToEdit.cvFileName);
+            }
+        }
+    }, [editingAppId]);
+
 
     const handleEditApplication = (id) => {
-        console.log("EDIT ", id)
+        setEditingAppId(id);
+        resetContextMenu();
+    }
+
+    const renderApplicationRow = (application) => {
+        if (editingAppId === application.id) {
+            return renderEditApplicationRow(application);
+        }
+        return renderDisplayApplicationRow(application);
+    }
+
+    const renderDisplayApplicationRow = (application) => {
+        return (
+            <>
+                <td>{application.id}</td>
+                <td>{formatDate(application.applicationDate)}</td>
+                <td>{application.companyName}</td>
+                <td>{application.positionName}</td>
+                <td>
+                    {application.offerLink ? (
+                        <a href={application.offerLink} target='_blank'><span className='bi bi-link'></span></a>
+                    ) : (
+                        '')}
+                </td>
+                <td className='longer'>{application.status}</td>
+                <td>{application.comment}</td>
+                <td>{application.cvFileName}</td>
+            </>
+        )
+    }
+
+    const [editingDate, setEditingDate] = useState('');
+    const [editingCompany, setEditingCompany] = useState('');
+    const [editingPosition, setEditingPosition] = useState('');
+    const [editingOfferLink, setEditingOfferLink] = useState('');
+    const [editingStatus, setEditingStatus] = useState('');
+    const [editingComment, setEditingComment] = useState('');
+    const [editingCvFileName, setEditingCvFileName] = useState('');
+
+    const renderEditApplicationRow = (application) => {
+
+        const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
+
+        return (
+            <>
+                <td>
+                    <button className='btn btn-success'
+                        onClick={() => {
+                            handleSaveEditedApplication(application.id)
+                            setEditingAppId(null);
+                        }}>
+                        <span className='bi bi-check-lg'></span>
+                    </button>
+                    <button className='btn btn-danger'
+                        onClick={() => { setEditingAppId(null) }}>
+                        <span className='bi bi-x-lg'></span>
+                    </button>
+                </td>
+                <td>
+                    <input
+                        type="date"
+                        className="form-control"
+                        value={isoDateRegex.test(editingDate) ? editingDate.split("T")[0] : editingDate}
+                        onChange={(event) => setEditingDate(event.target.value)}
+                    />
+                </td>
+                <td>
+                    <input className="form-control" type="text" name='company'
+                        value={editingCompany}
+                        onChange={(event) => setEditingCompany(event.target.value)} />
+                </td>
+                <td>
+                    <input className="form-control" type="text" name='position'
+                        value={editingPosition}
+                        onChange={(event) => setEditingPosition(event.target.value)} />
+                </td>
+                <td>
+                    <input className="form-control" type="text" name='offer-link'
+                        value={editingOfferLink}
+                        onChange={(event) => setEditingOfferLink(event.target.value)} />
+                </td>
+                <td>
+                    <select className='form-select'
+                        value={editingStatus}
+                        onChange={(event) => setEditingStatus(event.target.value)}>
+                        {
+                            statuses.map(status =>
+                                <option key={status} value={status}>{status}</option>
+                            )
+                        }
+                    </select>
+                </td>
+                <td>
+                    <textarea className="form-control" id="comment" name='comment' rows="1"
+                        value={editingComment}
+                        onChange={(event) => setEditingComment(event.target.value)} />
+                </td>
+                <td>
+                    <input className="form-control" type="text" name='cv-file'
+                        value={editingCvFileName}
+                        onChange={(event) => setEditingCvFileName(event.target.value)} />
+                </td>
+            </>
+        )
+    }
+
+    const handleSaveEditedApplication = (id) => {
+        updateJobApplication(id, {
+            applicationDate: editingDate,
+            companyName: editingCompany,
+            positionName: editingPosition,
+            offerLink: editingOfferLink,
+            status: editingStatus,
+            comment: editingComment,
+            cvFileName: editingCvFileName
+        }).then((response) => {
+            clearEditInputFields();
+            getAllApplications();
+        }).catch(error => {
+            console.error(error);
+        })
+    }
+
+    const clearEditInputFields = () => {
+        setEditingDate('');
+        setEditingCompany('');
+        setEditingPosition('');
+        setEditingOfferLink('');
+        setEditingStatus('');
+        setEditingComment('');
+        setEditingCvFileName('');
     }
 
     const handleDeleteApplication = () => {
@@ -202,19 +349,7 @@ const JobApplication = () => {
                                             onContextMenu={(e) => { handleOnContextMenu(e, application) }}
                                             className={`${application.selected ? "selected" : ""}`}
                                         >
-                                            <td>{application.id}</td>
-                                            <td>{formatDate(application.applicationDate)}</td>
-                                            <td>{application.companyName}</td>
-                                            <td>{application.positionName}</td>
-                                            <td>
-                                                {application.offerLink ? (
-                                                    <a href={application.offerLink} target='_blank'><span className='bi bi-link'></span></a>
-                                                ) : (
-                                                    '')}
-                                            </td>
-                                            <td className='longer'>{application.status}</td>
-                                            <td>{application.comment}</td>
-                                            <td>{application.cvFileName}</td>
+                                            {renderApplicationRow(application)}
                                         </tr>
                                     )
                                 }
@@ -284,7 +419,7 @@ const JobApplication = () => {
                                 text: "Edit",
                                 icon: <span className='bi bi-pencil'></span>,
                                 type: "edit",
-                                onClick: () => { 
+                                onClick: () => {
                                     const selectedApp = applications.find(app => app.selected);
                                     if (selectedApp) {
                                         handleEditApplication(selectedApp.id);
