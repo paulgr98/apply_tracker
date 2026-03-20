@@ -157,8 +157,10 @@ const JobApplication = () => {
         });
     }
 
-    const handleEditApplication = () => {
-        console.log("EDIT")
+
+
+    const handleEditApplication = (id) => {
+        console.log("EDIT ", id)
     }
 
     const handleDeleteApplication = () => {
@@ -206,7 +208,7 @@ const JobApplication = () => {
                                             <td>{application.positionName}</td>
                                             <td>
                                                 {application.offerLink ? (
-                                                    <a href={application.offerLink} target='_blank'>Click Me!</a>
+                                                    <a href={application.offerLink} target='_blank'><span className='bi bi-link'></span></a>
                                                 ) : (
                                                     '')}
                                             </td>
@@ -220,7 +222,7 @@ const JobApplication = () => {
 
                                     <td>
                                         <button type="submit" className="btn btn-success">
-                                            <span className='bi bi-plus'></span>
+                                            <span className='bi bi-plus-lg'></span>
                                         </button>
                                     </td>
                                     <td>
@@ -280,13 +282,18 @@ const JobApplication = () => {
                         buttons={[
                             {
                                 text: "Edit",
-                                icon: "🖊️",
+                                icon: <span className='bi bi-pencil'></span>,
                                 type: "edit",
-                                onClick: () => { handleEditApplication() }
+                                onClick: () => { 
+                                    const selectedApp = applications.find(app => app.selected);
+                                    if (selectedApp) {
+                                        handleEditApplication(selectedApp.id);
+                                    }
+                                }
                             },
                             {
                                 text: "Delete",
-                                icon: "🗑️",
+                                icon: <span className='bi bi-trash'></span>,
                                 type: "delete",
                                 onClick: () => { handleDeleteApplication() }
                             }

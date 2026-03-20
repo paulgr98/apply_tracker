@@ -36,8 +36,12 @@ tr.inputrow td:last-child {
     border-top-style: dashed;
 }
 
-.bi {
-    font-weight: bolder;
+.bi-plus-lg {
+    -webkit-text-stroke: 1.5px;
+}
+
+.bi-link {
+    font-size: 2em;
 }
 
 .btn {
